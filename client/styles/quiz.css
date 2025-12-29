@@ -24,7 +24,7 @@ body{
   overflow:hidden;
   font-family: "IBM Plex Mono", monospace;
 
-  background: url("../assets/img/bg-dekstop.png")
+  background: url("/assets/img/bg-dekstop.png")
               center / cover no-repeat;
 }
 
@@ -192,7 +192,7 @@ body{
 /* BACKGROUND MOBILE */
 @media (max-width: 768px){
   body{
-    background: url("../assets/img/bg-mobile.png")
+    background: url("/assets/img/bg-mobile.png")
                 center / cover no-repeat;
   }
 }
