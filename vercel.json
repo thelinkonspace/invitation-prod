@@ -1,9 +1,12 @@
 {
+  "redirects": [
+    { "source": "/", "destination": "/loading", "permanent": false }
+  ],
   "rewrites": [
+    { "source": "/loading", "destination": "/pages/index.html" },
     { "source": "/landing", "destination": "/pages/landing/index.html" },
     { "source": "/quiz", "destination": "/pages/quiz/index.html" },
     { "source": "/result", "destination": "/pages/result/index.html" },
-    { "source": "/twibbon", "destination": "/pages/twibbon/index.html" },
-    { "source": "/", "destination": "/pages/landing/index.html" }
+    { "source": "/twibbon", "destination": "/pages/twibbon/index.html" }
   ]
 }
