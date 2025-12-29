@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/landing", "destination": "/pages/landing/index.html" },
+    { "source": "/quiz", "destination": "/pages/quiz/index.html" },
+    { "source": "/result", "destination": "/pages/result/index.html" },
+    { "source": "/twibbon", "destination": "/pages/twibbon/index.html" },
+    { "source": "/", "destination": "/pages/landing/index.html" }
+  ]
+}

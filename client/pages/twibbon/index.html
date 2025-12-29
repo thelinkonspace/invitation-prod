@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Twibbon Drag & Resize</title>
+  <link rel="stylesheet" href="../../styles/twibbon.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>Twibbon Maker</h1>
+      <p>Upload foto → drag untuk geser → resize pakai slider (atau pinch di HP).</p>
+    </header>
+
+    <div class="panel">
+      <label class="btn">
+        Upload Foto User
+        <input id="fileInput" type="file" accept="image/*" hidden />
+      </label>
+
+      <div class="controls">
+        <label>
+          Zoom
+          <input id="scaleRange" type="range" min="0.2" max="4" step="0.01" value="1" />
+        </label>
+
+        <label>
+          Putar
+          <input id="rotateRange" type="range" min="-180" max="180" step="1" value="0" />
+        </label>
+
+        <button id="resetBtn" class="btn secondary" type="button">Reset</button>
+        <button id="downloadBtn" class="btn primary" type="button">Download PNG</button>
+      </div>
+    </div>
+
+    <div class="stage">
+      <canvas id="canvas" width="1080" height="1080"></canvas>
+    </div>
+
+    <footer>
+      <small>Template: <code>twibbon.png</code> (PNG transparan). Ukuran output: 1080×1080.</small>
+    </footer>
+  </div>
+
+  <script src="../../scripts/twibbon.js"></script>
+</body>
+</html>

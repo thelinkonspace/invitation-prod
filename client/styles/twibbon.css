@@ -1,0 +1,38 @@
+:root { --bg:#0b0f19; --card:#121a2a; --text:#e7ecff; --muted:#a9b4da; }
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background: radial-gradient(800px 500px at 20% 0%, #1a2a6c44, transparent), var(--bg);
+  color: var(--text);
+}
+.app { max-width: 980px; margin: 0 auto; padding: 18px; }
+header h1 { margin: 0 0 6px; font-size: 22px; }
+header p { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
+
+.panel {
+  background: var(--card); border: 1px solid #223055; border-radius: 14px;
+  padding: 14px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+}
+.controls { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.controls label { display: grid; gap: 6px; font-size: 13px; color: var(--muted); }
+input[type="range"] { width: 210px; }
+
+.btn {
+  border: 1px solid #2a3a68; background: #152042; color: var(--text);
+  padding: 10px 12px; border-radius: 12px; cursor: pointer; font-weight: 600;
+}
+.btn.secondary { background: #0f1833; }
+.btn.primary { background: #2a4bff22; border-color: #2a4bff66; }
+
+.stage {
+  margin-top: 14px;
+  background: #0a1022; border: 1px solid #223055; border-radius: 14px;
+  padding: 10px; display: grid; place-items: center;
+}
+canvas {
+  width: min(92vw, 720px);
+  height: auto;
+  border-radius: 10px;
+  touch-action: none; /* penting untuk drag/pinch */
+}
+footer { margin-top: 12px; color: var(--muted); }

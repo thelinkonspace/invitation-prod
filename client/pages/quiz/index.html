@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quiz</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles/quiz.css">
+</head>
+
+<body>
+  <main class="stage">
+    <section class="popup" id="popup" aria-label="Welcome Form" aria-hidden="true">
+      <div class="card">
+        <!-- FRAME PNG (judul + box luar) -->
+        <img
+          class="card-frame"
+          src="../../assets/img/bg-quiz.png"
+          alt=""
+          draggable="false"
+        />
+
+        <div class="card-quiz">
+          <div class="card-title"><strong>Selamat Datang di <span style="background-color: #eeeeed;">Linkon Space, </span></strong></div>
+          <div class="card-caption">Sebagai calon <strong>Deepspace Hunter</strong>, setiap keputusan, naluri, dan nilai yang kamu pegang akan 
+            menentukan partner yang paling selaras denganmu di medan misi.</div>
+          <div class="card-caption">Ikuti rangkaian pertanyaan berikut untuk menemukan partner yang paling cocok mendampingimu dalam menghadapi masa depan.</div>
+          <button class="btn" id="startBtn" type="button">Start</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="../../scripts/quiz.js"></script>
+</body>
+</html>

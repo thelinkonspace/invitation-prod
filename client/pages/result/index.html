@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Result</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles/result.css">
+</head>
+
+<body>
+  <main class="stage">
+    <section class="popup" id="popup" aria-label="Welcome Form" aria-hidden="true">
+      <div class="card">
+        <!-- FRAME PNG (judul + box luar) -->
+        <picture>
+          <source media="(max-width: 768px)" srcset="img/bg-result1.png">
+          <img
+            class="card-frame"
+            src="../../assets/img/bg-result.png"
+            alt=""
+            draggable="false"
+          />
+        </picture>
+        <div class="card-content">
+          <h1 class="card-title">Partner Deepspace Hunter-mu adalah Xavier.</h1>
+          <div class="result-section">
+            <img
+              class="result-image"
+              id="result-image"
+              src="../../assets/img/res-1.jpg"
+              alt="Gambar hasil analisis"
+              draggable="false"
+            />
+            <div class="result-text" id="result-text">
+              <p>
+                Xavier adalah sosok yang memilih berdiri di sampingmu, bukan di depan atau di belakangmu. Dia tenang, jarang berbicara, namun kehadirannya selalu terasa, terutama saat dunia mulai terasa terlalu berat. Xavier mencintai dengan cara yang sunyi. Dia tidak menuntut, tidak mengekang, dan tidak memaksamu untuk bergantung padanya.
+                </p>
+                <p>Kamu cocok dengannya karena kamu menghargai ruang dan kebebasan, namun tetap membutuhkan seseorang yang tidak pergi. Bersama Xavier, kamu tidak perlu berpura-pura kuat sepanjang waktu. Dia akan menjagamu dari balik bayangan dan memastikan kamu bisa terus melangkah dengan caramu sendiri.
+              </p>
+              <div class="btn-container">
+                <button class="btn-card" id="btn-restart">Coba Lagi</button>
+                <button class="btn-card" id="btn-download">Unduh Hasil</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </section>
+  </main>
+
+  <script src="../../scripts/result.js"></script>
+</body>
+</html>

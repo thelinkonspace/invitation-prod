@@ -1,0 +1,321 @@
+:root{
+  /* ukuran popup */
+  --cardW: min(600px, 92vw);
+
+  /* posisi area form di atas frame PNG */
+  --formLeft: 15%;
+  --formTop: 28%;
+  --formW: 65%;
+
+  /* ukuran field */
+  --fieldH: 64px;
+  --gap: 12px;
+
+  /* tombol */
+  --btnH: 50px;
+}
+
+/* BACKGROUND DESKTOP */
+body{
+  margin:0;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  font-family: "IBM Plex Mono", monospace;
+
+  background: url("../assets/img/bg-dekstop.png")
+              center / cover no-repeat;
+}
+
+.stage{
+  width:100%;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+}
+
+/* Popup */
+.popup{
+  width:100%;
+  display:grid;
+  place-items:center;
+}
+
+/* Animasi pop-up */
+.popup .card{
+  width: var(--cardW);
+  position:relative;
+
+  transform: translateY(18px) scale(.84); /* sebelumnya 14px & .90 */
+  opacity:0;
+
+  transition: transform .65s cubic-bezier(.16, 1, .3, 1), opacity .55s ease;
+  will-change: transform, opacity;
+}
+
+.popup.show .card{
+  transform: translateY(0) scale(1);
+  opacity:1;
+}
+
+/* Frame PNG */
+.card-frame{
+  width:100%;
+  height:auto;
+  display:block;
+  user-select:none;
+  pointer-events:none;
+  filter: drop-shadow(0 18px 45px rgba(0,0,0,.18));
+}
+
+/* Form overlay di atas PNG */
+.card-quiz{
+  font-family: 'Times New Roman', Times, serif;
+  position:absolute;
+  left: var(--formLeft);
+  top: var(--formTop);
+  width: var(--formW);
+
+  display:flex;
+  flex-direction:column;
+  gap: var(--gap);
+}
+
+.card-title{
+  font-size: 24px;
+  font-weight: 600;
+  color: #625f5f
+}
+
+.card-caption{
+  font-size: 20px;
+  color: #625f5f;
+  background-color: #eeeeed;
+  text-align: justify;
+}
+
+.card-options{
+  display:flex;
+  flex-direction:column;
+  gap: var(--gap);
+}
+
+.btn-card{
+  height: 48px;
+  width: 100%;
+  padding: 0 16px;
+
+  border-radius: 12px;
+  border:1px solid #aaa;
+  cursor:pointer;
+
+  background: #dbc9b9;
+  box-shadow: 0 8px 16px rgba(0,0,0,.12);
+
+  font: 600 18px/1 'Times New Roman', Times, serif;
+  color: rgba(70,70,70,.9);
+  text-align: left;
+}
+
+.btn-card.selected {
+  background: #a89b8a;
+  border-color: #625f5f;
+}
+
+.btn-config{
+  font-family: 'Times New Roman', Times, serif;
+  position:absolute;
+  left: 10%;
+  top: 86%;
+  width: 77%;
+
+  display:flex;
+  justify-content: space-between;
+}
+
+.btn-config button{
+  height: 40px;
+  width: 120px;
+  padding: 0 16px;
+
+  border:0;
+  cursor:pointer;
+
+  background: #625f5f;
+  box-shadow: 0 14px 28px rgba(0,0,0,.12);
+
+  font: 600 18px/1 'Times New Roman', Times, serif;
+  letter-spacing:.12em;
+  color: #dfdcdb;
+}
+
+/* Tombol */
+.btn{
+  height: var(--btnH);
+  width: fit-content;
+  align-self: center;
+  padding: 0 34px;
+  
+  border-radius: 999px;
+  border:0;
+  cursor:pointer;
+
+  background: #d6c1aa;
+  box-shadow: 0 14px 28px rgba(0,0,0,.12);
+
+  font: 600 22px/1 'Times New Roman', Times, serif;
+  letter-spacing:.12em;
+  color: rgba(70,70,70,.9);
+}
+
+.btn:active{
+  transform: translateY(1px);
+}
+
+.btn-config button{
+  height: 40px;
+  width: 120px;
+  padding: 0 16px;
+
+  border:0;
+  cursor:pointer;
+
+  background: #625f5f;
+  box-shadow: 0 14px 28px rgba(0,0,0,.12);
+
+  font: 600 18px/1 'Times New Roman', Times, serif;
+  letter-spacing:.12em;
+  color: #dfdcdb;
+}
+
+/* BACKGROUND MOBILE */
+@media (max-width: 768px){
+  body{
+    background: url("../assets/img/bg-mobile.png")
+                center / cover no-repeat;
+  }
+}
+@media (max-width: 620px){
+  :root{
+    /* card lebih kecil biar pas layar */
+    --cardW: min(420px, 92vw);
+
+    /* posisi form lebih naik */
+    --formLeft: 14%;
+    --formTop: 24%;   /* NAIK dari sebelumnya */
+    --formW: 70%;
+
+    /* field & spacing lebih kecil */
+    --fieldH: 38px;
+    --gap: 8px;
+
+    /* tombol lebih kecil */
+    --btnH: 30px;
+  }
+
+  .card-title{
+    font-size: 18px;
+  }
+
+  .card-caption{
+    font-size: 15px;
+  }
+
+  .btn{
+    height: var(--btnH);
+    padding: 0 20px;
+
+    font: 600 18px/1 'Times New Roman', Times, serif;
+  }
+
+  .btn-card{
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .btn-config button{
+    height: 36px;
+    width: 100px;
+    font-size: 16px;
+  }
+}
+/* =====================
+   HP KECIL (lebih presisi)
+===================== */
+@media (max-width: 480px){
+  :root{
+    /* card lebih kecil biar pas layar */
+    --cardW: min(420px, 92vw);
+
+    /* posisi form lebih naik */
+    --formLeft: 14%;
+    --formTop: 24%;   /* NAIK dari sebelumnya */
+    --formW: 70%;
+
+    /* field & spacing lebih kecil */
+    --fieldH: 38px;
+    --gap: 8px;
+
+    /* tombol lebih kecil */
+    --btnH: 30px;
+  }
+
+  .card-title{
+    font-size: 18px;
+  }
+
+  .card-caption{
+    font-size: 15px;
+  }
+
+  .btn{
+    height: var(--btnH);
+    padding: 0 20px;
+
+    font: 600 18px/1 'Times New Roman', Times, serif;
+  }
+
+  .btn-card{
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .btn-config button{
+    height: 32px;
+    width: 90px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 400px){
+  :root{
+    --btnH: 30px;
+    --gap: 4px;
+  }
+  .card-title{
+    font-size: 16px;
+  }
+
+  .card-caption{
+    font-size: 13px;
+  }
+
+  .btn{
+    height: var(--btnH);
+    padding: 0 16px;
+
+    font: 600 16px/1 'Times New Roman', Times, serif;
+  }
+
+  .btn-card{
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .btn-config button{
+    height: 28px;
+    width: 80px;
+    font-size: 12px;
+  }
+}
