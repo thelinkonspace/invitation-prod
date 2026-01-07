@@ -4,6 +4,7 @@
   ],
   "rewrites": [
     { "source": "/loading", "destination": "/pages/index.html" },
+    { "source": "/test", "destination": "/pages/test.html" },
     { "source": "/landing", "destination": "/pages/landing/index.html" },
     { "source": "/quiz", "destination": "/pages/quiz/index.html" },
     { "source": "/result", "destination": "/pages/result/index.html" },
