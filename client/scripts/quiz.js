@@ -2,6 +2,7 @@ import { goTo } from "../scripts/core.js";
 
 const popup = document.getElementById("popup");
 const startBtn = document.getElementById("startBtn");
+const bgm = document.getElementById("bgm");
 const cardQuiz = document.querySelector(".card-quiz");
 
 // Array pertanyaan
@@ -103,6 +104,12 @@ window.addEventListener("load", () => {
 });
 
 startBtn.addEventListener("click", () => {
+  bgm.muted = false;
+  bgm.volume = 1;      // pastikan > 0
+  bgm.currentTime = 0;
+  bgm.play()
+    .then(() => console.log("Audio playing"))
+    .catch(err => console.error(err));
   currentQuestionIndex = 0;
 
   // tambahkan btn-config di bawah card-quiz
