@@ -52,6 +52,75 @@ const questions = [
 let currentQuestionIndex = 0;
 let answers = []; // untuk menyimpan jawaban
 
+const STORAGE_KEY = "quiz_state_v1";
+const STATE_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 jam
+
+function saveState() {
+  const state = {
+    currentQuestionIndex,
+    answers,
+    savedAt: Date.now(),
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  console.log("[Quiz] State saved:", { currentQuestion: currentQuestionIndex, totalAnswers: answers.length });
+}
+
+function isStateExpired(savedAt) {
+  const now = Date.now();
+  const ageMs = now - savedAt;
+  const isExpired = ageMs > STATE_EXPIRY_MS;
+  
+  if (isExpired) {
+    console.warn(`[Quiz] State expired. Age: ${(ageMs / 1000 / 60 / 60).toFixed(2)} hours`);
+  }
+  
+  return isExpired;
+}
+
+function loadState() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) {
+    console.log("[Quiz] No saved state found");
+    return false;
+  }
+
+  try {
+    const state = JSON.parse(raw);
+    if (!state || !Array.isArray(state.answers)) {
+      console.warn("[Quiz] Invalid state structure");
+      return false;
+    }
+
+    // Cek apakah state sudah expired
+    if (state.savedAt && isStateExpired(state.savedAt)) {
+      console.log("[Quiz] State expired, clearing and starting fresh");
+      localStorage.removeItem(STORAGE_KEY);
+      return false;
+    }
+
+    currentQuestionIndex = Number.isInteger(state.currentQuestionIndex)
+      ? state.currentQuestionIndex
+      : 0;
+
+    answers = state.answers;
+
+    // jaga-jaga kalau index melewati jumlah pertanyaan
+    if (currentQuestionIndex < 0) currentQuestionIndex = 0;
+    if (currentQuestionIndex >= questions.length) currentQuestionIndex = questions.length - 1;
+
+    console.log("[Quiz] State restored:", { currentQuestion: currentQuestionIndex, totalAnswers: answers.length });
+    return true;
+  } catch (error) {
+    console.error("[Quiz] Error parsing state:", error);
+    return false;
+  }
+}
+
+function clearState() {
+  localStorage.removeItem(STORAGE_KEY);
+  console.log("[Quiz] State cleared from localStorage");
+}
+
 // Fungsi untuk update pertanyaan
 function updateQuestion() {
   const q = questions[currentQuestionIndex];
@@ -86,6 +155,8 @@ function updateQuestion() {
       // Opsional: highlight tombol yang dipilih
       optionButtons.forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
+
+      saveState(); // ✅ simpan tiap klik jawaban
     });
   });
 
@@ -96,12 +167,52 @@ function updateQuestion() {
 }
 
 window.addEventListener("load", () => {
-  // muncul "pop up" setelah page tampil
   setTimeout(() => {
     popup.classList.add("show");
     popup.setAttribute("aria-hidden", "false");
   }, 120);
+
+  // ✅ coba restore
+  const restored = loadState();
+  if (restored) {
+    // pastikan tombol navigasi ada
+    const card = document.querySelector(".card");
+    if (!document.getElementById("nextBtn")) {
+      card.insertAdjacentHTML('beforeend', `
+        <div class="btn-config">
+          <button id="prevBtn">Previous</button>
+          <button id="nextBtn">Next</button>
+        </div>
+      `);
+
+      // pasang listener lagi
+      const nextBtn = document.getElementById("nextBtn");
+      const prevBtn = document.getElementById("prevBtn");
+
+      nextBtn.addEventListener("click", () => {
+        if (currentQuestionIndex < questions.length - 1) {
+          currentQuestionIndex++;
+          saveState();
+          updateQuestion();
+        } else {
+          saveState();
+          goTo("result");
+        }
+      });
+
+      prevBtn.addEventListener("click", () => {
+        if (currentQuestionIndex > 0) {
+          currentQuestionIndex--;
+          saveState();
+          updateQuestion();
+        }
+      });
+    }
+
+    updateQuestion(); // render pertanyaan terakhir yang tersimpan
+  }
 });
+
 
 startBtn.addEventListener("click", () => {
   bgm.muted = false;
@@ -129,10 +240,11 @@ startBtn.addEventListener("click", () => {
   nextBtn.addEventListener("click", () => {
     if (currentQuestionIndex < questions.length - 1) {
       currentQuestionIndex++;
+      saveState();      // ✅ simpan progress
       updateQuestion();
     } else {
       // Jika sudah pertanyaan terakhir, pindah ke result
-      // window.location.href = "/pages/result/";
+      // Data akan dihapus oleh result.js setelah digunakan
       goTo("result");
     }
   });
@@ -142,6 +254,7 @@ startBtn.addEventListener("click", () => {
   prevBtn.addEventListener("click", () => {
     if (currentQuestionIndex > 0) {
       currentQuestionIndex--;
+      saveState();      // ✅ simpan progress
       updateQuestion();
     }
   });
