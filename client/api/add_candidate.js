@@ -1,4 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
+import crypto from "crypto";
+
+const sessionToken = crypto.randomUUID();
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
@@ -7,43 +10,45 @@ const supabase = createClient(
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ message: "Method not allowed" });
+    return res.status(405).json({
+      success: false,
+      code: "METHOD_NOT_ALLOWED",
+      message: "Method not allowed",
+    });
   }
 
-  const { username, oc_name, code_ref } = req.body;
+  const { username, oc_name, code_ref, mode = "create" } = req.body;
 
-  // validasi sederhana
+  // ===== VALIDATION =====
   if (!username) {
-    return res.status(400).json({ message: "username is required" });
+    return res.status(400).json({
+      success: false,
+      code: "USERNAME_REQUIRED",
+      message: "username is required",
+    });
   }
 
-  if (!oc_name) {
-    return res.status(400).json({ message: "oc_name is required" });
-  }
-
-  if (code_ref === undefined || code_ref === null) {
-    return res.status(400).json({ message: "code_ref is required" });
+  if (!code_ref) {
+    return res.status(400).json({
+      success: false,
+      code: "CODE_REF_REQUIRED",
+      message: "code_ref is required",
+    });
   }
 
   const codeRefStr = String(code_ref);
 
-  // hanya angka
-  if (!/^\d+$/.test(codeRefStr)) {
+  if (!/^\d{6}$/.test(codeRefStr)) {
     return res.status(400).json({
-      message: "code_ref must contain only numbers",
-    });
-  }
-
-  // tepat 6 digit
-  if (codeRefStr.length !== 6) {
-    return res.status(400).json({
+      success: false,
+      code: "INVALID_CODE_REF",
       message: "code_ref must be exactly 6 digits",
     });
   }
 
   const parsedCodeRef = Number(codeRefStr);
 
-  // ✅ CEK KE available_codes: username + code_ref harus match
+  // ===== CHECK AVAILABLE CODE =====
   const { data: available, error: availableErr } = await supabase
     .from("available_codes")
     .select("username, code_ref")
@@ -52,16 +57,43 @@ export default async function handler(req, res) {
     .maybeSingle();
 
   if (availableErr) {
-    return res.status(500).json({ message: availableErr.message });
-  }
-
-  if (!available) {
-    return res.status(400).json({
-      message: "username and code_ref do not match / not available",
+    return res.status(500).json({
+      success: false,
+      code: "DATABASE_ERROR",
+      message: availableErr.message,
     });
   }
 
-  // ✅ kalau match, baru insert ke hunter_candidates
+  if (!available) {
+    return res.status(401).json({
+      success: false,
+      code: "INVALID_CREDENTIAL",
+      message: "Username and code reference are invalid",
+    });
+  }
+
+  // ===== MODE: CHECK ONLY (LOGIN-LIKE) =====
+  if (mode === "check") {
+    return res.status(200).json({
+      success: true,
+      code: "VALID_CREDENTIAL",
+      message: "Credential is valid",
+      data: {
+        username,
+        code_ref: parsedCodeRef,
+      },
+    });
+  }
+
+  // ===== MODE: CREATE =====
+  if (!oc_name) {
+    return res.status(400).json({
+      success: false,
+      code: "OC_NAME_REQUIRED",
+      message: "oc_name is required",
+    });
+  }
+
   const { data, error } = await supabase
     .from("hunter_candidates")
     .insert([
@@ -69,17 +101,29 @@ export default async function handler(req, res) {
         username,
         oc_name,
         code_ref: parsedCodeRef,
+        session_token: sessionToken,
       },
     ])
     .select()
     .maybeSingle();
 
   if (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      code: "INSERT_FAILED",
+      message: error.message,
+    });
   }
 
   return res.status(201).json({
+    success: true,
+    code: "CANDIDATE_CREATED",
     message: "Candidate created successfully",
-    data,
+    data: {
+      id: data.id,
+      username: data.username,
+      oc_name: data.oc_name,
+      session_token: sessionToken,
+    },
   });
 }

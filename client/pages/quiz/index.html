@@ -7,6 +7,23 @@
 
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles/quiz.css">
+  <script>
+    (function () {
+      const token = sessionStorage.getItem("session_token");
+
+      if (!token) {
+        location.replace("/");
+        return;
+      }
+
+      fetch(`/api/check_session?token=${token}`)
+        .then(res => res.json())
+        .then(r => {
+          if (!r.success) location.replace("/");
+        })
+        .catch(() => location.replace("/"));
+    })();
+  </script>
 </head>
 
 <body>

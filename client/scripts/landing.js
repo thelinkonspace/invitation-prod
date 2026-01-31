@@ -42,8 +42,11 @@ form.addEventListener("submit", async (e) => {
     console.log("SUCCESS:", result);
 
     // kalau sukses: tutup popup + lanjut ke quiz
-    popup.classList.remove("show");
-    goTo("quiz");
+    if (result.success) {
+      sessionStorage.setItem("session_token", result.data.session_token);
+      popup.classList.remove("show");
+      goTo("quiz");
+    }
 
   } catch (err) {
     console.error(err);
