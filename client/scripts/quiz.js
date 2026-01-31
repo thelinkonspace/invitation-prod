@@ -5,47 +5,97 @@ const startBtn = document.getElementById("startBtn");
 const bgm = document.getElementById("bgm");
 const cardQuiz = document.querySelector(".card-quiz");
 
-// Array pertanyaan
+// Array pertanyaan (setiap opsi sekarang menyertakan poin untuk perhitungan hasil)
 const questions = [
   {
     question: "Saat misi berbahaya dan sinyal komunikasi terputus, apa yang pertama kali kamu lakukan?",
-    options: ["Tetap tenang dan analisis situasi", "Cari perlindungan segera", "Hubungi pusat komando untuk bantuan", "Gunakan alat navigasi untuk menemukan jalan keluar"]
+    options: [
+      { text: "Tetap tenang dan analisis situasi", points: 2 },
+      { text: "Cari perlindungan segera", points: 1 },
+      { text: "Hubungi pusat komando untuk bantuan", points: 3 },
+      { text: "Gunakan alat navigasi untuk menemukan jalan keluar", points: 4 }
+    ]
   },
   {
     question: "Partner ideal menurutmu adalah seseorang yang…",
-    options: ["Selalu ada di sisimu tanpa banyak bicara", "Memberimu rasa aman dan stabilitas", "Membuat hidup terasa lebih hidup dan berwarna", "Mendorongmu menjadi versi terkuat dari dirimu"]
+    options: [
+      { text: "Selalu ada di sisimu tanpa banyak bicara", points: 1 },
+      { text: "Memberimu rasa aman dan stabilitas", points: 2 },
+      { text: "Membuat hidup terasa lebih hidup dan berwarna", points: 3 },
+      { text: "Mendorongmu menjadi versi terkuat dari dirimu", points: 4 }
+    ]
   },
   {
     question: "Setelah misi selesai dan kamu terluka, apa yang kamu harapkan dari partnermu?",
-    options: ["Menemanimu diam-diam sampai kamu tertidur", "Merawatmu dengan teliti dan penuh perhatian", "Menghiburmu agar kamu lupa rasa sakit", "Meyakinkanmu bahwa kamu tidak boleh jatuh di medan perang"]
+    options: [
+      { text: "Menemanimu diam-diam sampai kamu tertidur", points: 1 },
+      { text: "Merawatmu dengan teliti dan penuh perhatian", points: 2 },
+      { text: "Menghiburmu agar kamu lupa rasa sakit", points: 3 },
+      { text: "Meyakinkanmu bahwa kamu tidak boleh jatuh di medan perang", points: 4 }
+    ]
   },
   {
     question: "Dalam tim Deepspace Hunter, peran apa yang paling cocok untukmu?",
-    options: ["Pelindung garis depan", "Perencana dan pengambil keputusan", "Pendukung fleksibel yang bisa menyesuaikan situasi", "Pemimpin lapangan yang tegas"]
+    options: [
+      { text: "Pelindung garis depan", points: 4 },
+      { text: "Perencana dan pengambil keputusan", points: 2 },
+      { text: "Pendukung fleksibel yang bisa menyesuaikan situasi", points: 3 },
+      { text: "Pemimpin lapangan yang tegas", points: 1 }
+    ]
   },
   {
     question: "Jika partnermu menyembunyikan rahasia besar, kamu akan…",
-    options: ["Menunggu sampai dia siap bercerita", "Menghadapinya secara langsung dan rasional", "Menggoda atau bercanda untuk mencairkan suasana", "Memaksa kebenaran keluar, apa pun risikonya"]
+    options: [
+      { text: "Menunggu sampai dia siap bercerita", points: 1 },
+      { text: "Menghadapinya secara langsung dan rasional", points: 2 },
+      { text: "Menggoda atau bercanda untuk mencairkan suasana", points: 3 },
+      { text: "Memaksa kebenaran keluar, apa pun risikonya", points: 4 }
+    ]
   },  
   {
     question: "Bagaimana caramu menunjukkan rasa sayang?",
-    options: ["Lewat tindakan kecil tanpa banyak kata", "Dengan perhatian konsisten dan tanggung jawab", "Lewat kata-kata, sentuhan, dan ekspresi emosional", "Dengan proteksi dan posesivitas"]  
+    options: [
+      { text: "Lewat tindakan kecil tanpa banyak kata", points: 1 },
+      { text: "Dengan perhatian konsisten dan tanggung jawab", points: 2 },
+      { text: "Lewat kata-kata, sentuhan, dan ekspresi emosional", points: 3 },
+      { text: "Dengan proteksi dan posesivitas", points: 4 }
+    ]
   },
   {
     question: "Saat dunia terasa terlalu kejam, apa yang paling kamu butuhkan?",
-    options: ["Seseorang yang memahami diam-mu", "Seseorang yang bisa diandalkan sepenuhnya", "Seseorang yang membuatmu tersenyum lagi", "Seseorang yang berkata, “Berdiri. Kita lawan.”"]  
+    options: [
+      { text: "Seseorang yang memahami diam-mu", points: 1 },
+      { text: "Seseorang yang bisa diandalkan sepenuhnya", points: 2 },
+      { text: "Seseorang yang membuatmu tersenyum lagi", points: 3 },
+      { text: "Seseorang yang berkata, “Berdiri. Kita lawan.”", points: 4 }
+    ]
   },
   {
     question: "Dalam hubungan, kamu paling takut pada…",
-    options: ["Ditinggalkan tanpa penjelasan", "Kehilangan orang yang kamu lindungi", "Hubungan yang terasa hambar", "Kehilangan kendali dan kekuatan"]  
+    options: [
+      { text: "Ditinggalkan tanpa penjelasan", points: 1 },
+      { text: "Kehilangan orang yang kamu lindungi", points: 2 },
+      { text: "Hubungan yang terasa hambar", points: 3 },
+      { text: "Kehilangan kendali dan kekuatan", points: 4 }
+    ]
   },
   {
     question: "Jika harus memilih, kamu lebih menghargai partner yang…",
-    options: ["Setia meski tak banyak menuntut", "Selalu memprioritaskan keselamatanmu", "Jujur pada perasaannya", "Tidak ragu mengotori tangannya demi kamu"]  
+    options: [
+      { text: "Setia meski tak banyak menuntut", points: 1 },
+      { text: "Selalu memprioritaskan keselamatanmu", points: 2 },
+      { text: "Jujur pada perasaannya", points: 3 },
+      { text: "Tidak ragu mengotori tangannya demi kamu", points: 4 }
+    ]
   },
   {
     question: "Kalimat mana yang paling kamu harapkan diucapkan partnermu?",
-    options: ["“Aku di sini. Kamu tidak sendirian.”", "“Serahkan padaku, aku akan menjagamu.”", "“Selama kita bersama, semuanya akan baik-baik saja.”", "“Dunia boleh melawanmu, tapi aku tidak.”"]  
+    options: [
+      { text: "“Aku di sini. Kamu tidak sendirian.”", points: 1 },
+      { text: "“Serahkan padaku, aku akan menjagamu.”", points: 2 },
+      { text: "“Selama kita bersama, semuanya akan baik-baik saja.”", points: 3 },
+      { text: "“Dunia boleh melawanmu, tapi aku tidak.”", points: 4 }
+    ]
   }
 ];
 
@@ -104,6 +154,20 @@ function loadState() {
 
     answers = state.answers;
 
+    // Normalize legacy answers (number -> {index, points}) so downstream code can assume object shape
+    answers = answers.map((a, i) => {
+      if (a === undefined || a === null) return a;
+      if (typeof a === 'object' && a.index !== undefined) return a; // already modern shape
+      if (typeof a === 'number') {
+        const idx = a;
+        const q = questions[i];
+        const opt = q && q.options && q.options[idx];
+        const pts = opt && (typeof opt === 'object' ? (opt.points || 0) : 0);
+        return { index: idx, points: pts };
+      }
+      return a;
+    });
+
     // jaga-jaga kalau index melewati jumlah pertanyaan
     if (currentQuestionIndex < 0) currentQuestionIndex = 0;
     if (currentQuestionIndex >= questions.length) currentQuestionIndex = questions.length - 1;
@@ -124,10 +188,15 @@ function clearState() {
 // Fungsi untuk update pertanyaan
 function updateQuestion() {
   const q = questions[currentQuestionIndex];
+  // support legacy options as string or modern object {text, points}
   cardQuiz.innerHTML = `
     <div class="card-caption">${q.question}</div>
     <div class="card-options">
-      ${q.options.map(option => `<button class="btn-card" type="button">${option}</button>`).join('')}
+      ${q.options.map((option, idx) => {
+        const text = typeof option === 'string' ? option : option.text;
+        const points = typeof option === 'string' ? 0 : (option.points || 0);
+        return `<button class="btn-card" type="button" data-index="${idx}" data-points="${points}">${text}</button>`
+      }).join('')}
     </div>
   `;
 
@@ -149,9 +218,12 @@ function updateQuestion() {
 
   // Tambahkan event listener untuk opsi
   const optionButtons = cardQuiz.querySelectorAll('.btn-card');
-  optionButtons.forEach((btn, index) => {
+  optionButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
-      answers[currentQuestionIndex] = index; // simpan index opsi yang dipilih
+      const idx = Number(btn.dataset.index);
+      const pts = Number(btn.dataset.points);
+      answers[currentQuestionIndex] = { index: idx, points: pts }; // simpan object jawaban
+
       // Opsional: highlight tombol yang dipilih
       optionButtons.forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
@@ -161,8 +233,10 @@ function updateQuestion() {
   });
 
   // Jika sudah ada jawaban sebelumnya, highlight
-  if (answers[currentQuestionIndex] !== undefined) {
-    optionButtons[answers[currentQuestionIndex]].classList.add('selected');
+  const prevAnswer = answers[currentQuestionIndex];
+  if (prevAnswer !== undefined && prevAnswer !== null) {
+    const selectedIndex = (typeof prevAnswer === 'number') ? prevAnswer : prevAnswer.index;
+    if (optionButtons[selectedIndex]) optionButtons[selectedIndex].classList.add('selected');
   }
 }
 
