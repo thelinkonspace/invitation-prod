@@ -185,6 +185,22 @@ function clearState() {
   console.log("[Quiz] State cleared from localStorage");
 }
 
+// Helper: hitung berapa pertanyaan yang belum dijawab
+function countUnanswered() {
+  const total = questions.length;
+  let unanswered = 0;
+  for (let i = 0; i < total; i++) {
+    const a = answers[i];
+    if (a === undefined || a === null) unanswered++;
+  }
+  return unanswered;
+}
+
+// Helper: apakah semua pertanyaan sudah dijawab?
+function allAnswered() {
+  return countUnanswered() === 0;
+}
+
 // Fungsi untuk update pertanyaan
 function updateQuestion() {
   const q = questions[currentQuestionIndex];
@@ -269,6 +285,13 @@ window.addEventListener("load", () => {
           saveState();
           updateQuestion();
         } else {
+          // Cek apakah semua pertanyaan sudah dijawab sebelum finish
+          const remaining = countUnanswered();
+          if (remaining > 0) {
+            window.alert(`Silakan jawab semua pertanyaan sebelum melihat hasil. Masih ada ${remaining} pertanyaan yang belum dijawab.`);
+            return;
+          }
+
           saveState();
           goTo("result");
         }
@@ -317,8 +340,15 @@ startBtn.addEventListener("click", () => {
       saveState();      // ✅ simpan progress
       updateQuestion();
     } else {
-      // Jika sudah pertanyaan terakhir, pindah ke result
+      // Jika sudah pertanyaan terakhir, cek dulu apakah semua sudah dijawab
+      const remaining = countUnanswered();
+      if (remaining > 0) {
+        window.alert(`Silakan jawab semua pertanyaan sebelum melihat hasil. Masih ada ${remaining} pertanyaan yang belum dijawab.`);
+        return;
+      }
+
       // Data akan dihapus oleh result.js setelah digunakan
+      saveState();
       goTo("result");
     }
   });
