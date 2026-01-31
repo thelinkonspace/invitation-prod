@@ -10,97 +10,107 @@ const questions = [
   {
     question: "Saat misi berbahaya dan sinyal komunikasi terputus, apa yang pertama kali kamu lakukan?",
     options: [
-      { text: "Tetap tenang dan analisis situasi", points: 2 },
-      { text: "Cari perlindungan segera", points: 1 },
-      { text: "Hubungi pusat komando untuk bantuan", points: 3 },
-      { text: "Gunakan alat navigasi untuk menemukan jalan keluar", points: 4 }
+      { text: "Tetap tenang dan analisis situasi", companion: 1 },
+      { text: "Cari perlindungan segera", companion: 2 },
+      { text: "Hubungi pusat komando untuk bantuan", companion: 3 },
+      { text: "Gunakan alat navigasi untuk menemukan jalan keluar", companion: 4 }
     ]
   },
   {
     question: "Partner ideal menurutmu adalah seseorang yang…",
     options: [
-      { text: "Selalu ada di sisimu tanpa banyak bicara", points: 1 },
-      { text: "Memberimu rasa aman dan stabilitas", points: 2 },
-      { text: "Membuat hidup terasa lebih hidup dan berwarna", points: 3 },
-      { text: "Mendorongmu menjadi versi terkuat dari dirimu", points: 4 }
+      { text: "Selalu ada di sisimu tanpa banyak bicara", companion: 1 },
+      { text: "Memberimu rasa aman dan stabilitas", companion: 2 },
+      { text: "Membuat hidup terasa lebih hidup dan berwarna", companion: 3 },
+      { text: "Mendorongmu menjadi versi terkuat dari dirimu", companion: 4 }
     ]
   },
   {
     question: "Setelah misi selesai dan kamu terluka, apa yang kamu harapkan dari partnermu?",
     options: [
-      { text: "Menemanimu diam-diam sampai kamu tertidur", points: 1 },
-      { text: "Merawatmu dengan teliti dan penuh perhatian", points: 2 },
-      { text: "Menghiburmu agar kamu lupa rasa sakit", points: 3 },
-      { text: "Meyakinkanmu bahwa kamu tidak boleh jatuh di medan perang", points: 4 }
+      { text: "Menemanimu diam-diam sampai kamu tertidur", companion: 1 },
+      { text: "Merawatmu dengan teliti dan penuh perhatian", companion: 2 },
+      { text: "Menghiburmu agar kamu lupa rasa sakit", companion: 3 },
+      { text: "Meyakinkanmu bahwa kamu tidak boleh jatuh di medan perang", companion: 4 }
     ]
   },
   {
     question: "Dalam tim Deepspace Hunter, peran apa yang paling cocok untukmu?",
     options: [
-      { text: "Pelindung garis depan", points: 4 },
-      { text: "Perencana dan pengambil keputusan", points: 2 },
-      { text: "Pendukung fleksibel yang bisa menyesuaikan situasi", points: 3 },
-      { text: "Pemimpin lapangan yang tegas", points: 1 }
+      { text: "Pelindung garis depan", companion: 1 },
+      { text: "Perencana dan pengambil keputusan", companion: 2 },
+      { text: "Pendukung fleksibel yang bisa menyesuaikan situasi", companion: 3 },
+      { text: "Pemimpin lapangan yang tegas", companion: 4 }
     ]
   },
   {
     question: "Jika partnermu menyembunyikan rahasia besar, kamu akan…",
     options: [
-      { text: "Menunggu sampai dia siap bercerita", points: 1 },
-      { text: "Menghadapinya secara langsung dan rasional", points: 2 },
-      { text: "Menggoda atau bercanda untuk mencairkan suasana", points: 3 },
-      { text: "Memaksa kebenaran keluar, apa pun risikonya", points: 4 }
+      { text: "Menunggu sampai dia siap bercerita", companion: 1 },
+      { text: "Menghadapinya secara langsung dan rasional", companion: 2 },
+      { text: "Menggoda atau bercanda untuk mencairkan suasana", companion: 3 },
+      { text: "Memaksa kebenaran keluar, apa pun risikonya", companion: 4 }
     ]
   },  
   {
     question: "Bagaimana caramu menunjukkan rasa sayang?",
     options: [
-      { text: "Lewat tindakan kecil tanpa banyak kata", points: 1 },
-      { text: "Dengan perhatian konsisten dan tanggung jawab", points: 2 },
-      { text: "Lewat kata-kata, sentuhan, dan ekspresi emosional", points: 3 },
-      { text: "Dengan proteksi dan posesivitas", points: 4 }
+      { text: "Lewat tindakan kecil tanpa banyak kata", companion: 1 },
+      { text: "Dengan perhatian konsisten dan tanggung jawab", companion: 2 },
+      { text: "Lewat kata-kata, sentuhan, dan ekspresi emosional", companion: 3 },
+      { text: "Dengan proteksi dan posesivitas", companion: 4 }
     ]
   },
   {
     question: "Saat dunia terasa terlalu kejam, apa yang paling kamu butuhkan?",
     options: [
-      { text: "Seseorang yang memahami diam-mu", points: 1 },
-      { text: "Seseorang yang bisa diandalkan sepenuhnya", points: 2 },
-      { text: "Seseorang yang membuatmu tersenyum lagi", points: 3 },
-      { text: "Seseorang yang berkata, “Berdiri. Kita lawan.”", points: 4 }
+      { text: "Seseorang yang memahami diam-mu", companion: 1 },
+      { text: "Seseorang yang bisa diandalkan sepenuhnya", companion: 2 },
+      { text: "Seseorang yang membuatmu tersenyum lagi", companion: 3 },
+      { text: "Seseorang yang berkata, “Berdiri. Kita lawan.”", companion: 4 }
     ]
   },
   {
     question: "Dalam hubungan, kamu paling takut pada…",
     options: [
-      { text: "Ditinggalkan tanpa penjelasan", points: 1 },
-      { text: "Kehilangan orang yang kamu lindungi", points: 2 },
-      { text: "Hubungan yang terasa hambar", points: 3 },
-      { text: "Kehilangan kendali dan kekuatan", points: 4 }
+      { text: "Ditinggalkan tanpa penjelasan", companion: 1 },
+      { text: "Kehilangan orang yang kamu lindungi", companion: 2 },
+      { text: "Hubungan yang terasa hambar", companion: 3 },
+      { text: "Kehilangan kendali dan kekuatan", companion: 4 }
     ]
   },
   {
     question: "Jika harus memilih, kamu lebih menghargai partner yang…",
     options: [
-      { text: "Setia meski tak banyak menuntut", points: 1 },
-      { text: "Selalu memprioritaskan keselamatanmu", points: 2 },
-      { text: "Jujur pada perasaannya", points: 3 },
-      { text: "Tidak ragu mengotori tangannya demi kamu", points: 4 }
+      { text: "Setia meski tak banyak menuntut", companion: 1 },
+      { text: "Selalu memprioritaskan keselamatanmu", companion: 2 },
+      { text: "Jujur pada perasaannya", companion: 3 },
+      { text: "Tidak ragu mengotori tangannya demi kamu", companion: 4 }
     ]
   },
   {
     question: "Kalimat mana yang paling kamu harapkan diucapkan partnermu?",
     options: [
-      { text: "“Aku di sini. Kamu tidak sendirian.”", points: 1 },
-      { text: "“Serahkan padaku, aku akan menjagamu.”", points: 2 },
-      { text: "“Selama kita bersama, semuanya akan baik-baik saja.”", points: 3 },
-      { text: "“Dunia boleh melawanmu, tapi aku tidak.”", points: 4 }
+      { text: "“Aku di sini. Kamu tidak sendirian.”", companion : 1 },
+      { text: "“Serahkan padaku, aku akan menjagamu.”", companion: 2 },
+      { text: "“Selama kita bersama, semuanya akan baik-baik saja.”", companion: 3 },
+      { text: "“Dunia boleh melawanmu, tapi aku tidak.”", companion: 4 }
     ]
   }
 ];
 
 let currentQuestionIndex = 0;
 let answers = []; // untuk menyimpan jawaban
+let shuffles = []; // menyimpan urutan acak per pertanyaan (persistent per sesi)
+
+// Fisher–Yates shuffle (in-place)
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 const STORAGE_KEY = "quiz_state_v1";
 const STATE_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 jam
@@ -109,6 +119,7 @@ function saveState() {
   const state = {
     currentQuestionIndex,
     answers,
+    shuffles,
     savedAt: Date.now(),
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -152,18 +163,30 @@ function loadState() {
       ? state.currentQuestionIndex
       : 0;
 
-    answers = state.answers;
+    answers = state.answers || [];
 
-    // Normalize legacy answers (number -> {index, points}) so downstream code can assume object shape
+    // Restore shuffles (validate expected structure)
+    shuffles = Array.isArray(state.shuffles) ? state.shuffles.map((s, i) => {
+      if (!Array.isArray(s)) return undefined;
+      const expectedLen = questions[i] && questions[i].options ? questions[i].options.length : 0;
+      if (s.length !== expectedLen) return undefined;
+      return s.map(n => Number(n));
+    }) : [];
+
+    // Normalize legacy answers (number -> {index, companion}) and ensure objects include companion when possible
     answers = answers.map((a, i) => {
       if (a === undefined || a === null) return a;
-      if (typeof a === 'object' && a.index !== undefined) return a; // already modern shape
+      if (typeof a === 'object' && a.index !== undefined) {
+        // if object has points but not companion, copy it over
+        if (a.companion === undefined && Number.isFinite(a.points)) a.companion = a.points;
+        return a; // already modern shape
+      }
       if (typeof a === 'number') {
         const idx = a;
         const q = questions[i];
         const opt = q && q.options && q.options[idx];
-        const pts = opt && (typeof opt === 'object' ? (opt.points || 0) : 0);
-        return { index: idx, points: pts };
+        const comp = opt && (typeof opt === 'object' ? (opt.companion || opt.points || 0) : 0);
+        return { index: idx, companion: comp };
       }
       return a;
     });
@@ -204,17 +227,31 @@ function allAnswered() {
 // Fungsi untuk update pertanyaan
 function updateQuestion() {
   const q = questions[currentQuestionIndex];
-  // support legacy options as string or modern object {text, points}
+  // Determine per-question order (persistent per-session)
+  const optionCount = q.options.length;
+  let order = shuffles[currentQuestionIndex];
+  let generatedOrder = false;
+  if (!Array.isArray(order) || order.length !== optionCount) {
+    order = Array.from({ length: optionCount }, (_, i) => i);
+    shuffleArray(order);
+    shuffles[currentQuestionIndex] = order;
+    generatedOrder = true;
+  }
+
   cardQuiz.innerHTML = `
     <div class="card-caption">${q.question}</div>
     <div class="card-options">
-      ${q.options.map((option, idx) => {
+      ${order.map((origIdx) => {
+        const option = q.options[origIdx];
         const text = typeof option === 'string' ? option : option.text;
-        const points = typeof option === 'string' ? 0 : (option.points || 0);
-        return `<button class="btn-card" type="button" data-index="${idx}" data-points="${points}">${text}</button>`
+        const companion = typeof option === 'string' ? 0 : (option.companion || option.points || 0);
+        return `<button class="btn-card" type="button" data-original-index="${origIdx}" data-companion="${companion}">${text}</button>`
       }).join('')}
     </div>
   `;
+
+  // If we created a new order, persist it immediately
+  if (generatedOrder) saveState();
 
   // Toggle visibility tombol Previous
   const prevBtn = document.getElementById("prevBtn");
@@ -236,9 +273,9 @@ function updateQuestion() {
   const optionButtons = cardQuiz.querySelectorAll('.btn-card');
   optionButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const idx = Number(btn.dataset.index);
-      const pts = Number(btn.dataset.points);
-      answers[currentQuestionIndex] = { index: idx, points: pts }; // simpan object jawaban
+      const origIdx = Number(btn.dataset.originalIndex);
+      const comp = Number(btn.dataset.companion);
+      answers[currentQuestionIndex] = { index: origIdx, companion: comp }; // simpan object jawaban (menggunakan original index)
 
       // Opsional: highlight tombol yang dipilih
       optionButtons.forEach(b => b.classList.remove('selected'));
@@ -248,11 +285,12 @@ function updateQuestion() {
     });
   });
 
-  // Jika sudah ada jawaban sebelumnya, highlight
+  // Jika sudah ada jawaban sebelumnya, highlight by original index
   const prevAnswer = answers[currentQuestionIndex];
   if (prevAnswer !== undefined && prevAnswer !== null) {
-    const selectedIndex = (typeof prevAnswer === 'number') ? prevAnswer : prevAnswer.index;
-    if (optionButtons[selectedIndex]) optionButtons[selectedIndex].classList.add('selected');
+    const storedIndex = (typeof prevAnswer === 'number') ? prevAnswer : prevAnswer.index;
+    const btnToSelect = Array.from(optionButtons).find(b => Number(b.dataset.originalIndex) === storedIndex);
+    if (btnToSelect) btnToSelect.classList.add('selected');
   }
 }
 
@@ -319,6 +357,11 @@ startBtn.addEventListener("click", () => {
     .then(() => console.log("Audio playing"))
     .catch(err => console.error(err));
   currentQuestionIndex = 0;
+
+  // clear previous answers/shuffles for a fresh start
+  answers = [];
+  shuffles = [];
+  saveState();
 
   // tambahkan btn-config di bawah card-quiz
   const card = document.querySelector(".card");

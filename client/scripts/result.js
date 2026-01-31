@@ -13,18 +13,28 @@ function getQuizResults() {
 
   try {
     const state = JSON.parse(raw);
-    // if totalPoints already saved, use it; otherwise compute from answers
-    if (!Number.isFinite(state.totalPoints)) {
-      const totalPoints = (state.answers || []).reduce((acc, a) => {
-        if (!a && a !== 0) return acc;
-        if (typeof a === 'object' && Number.isFinite(a.points)) return acc + a.points;
-        if (typeof a === 'number') return acc + (a + 1); // fallback: assume 0->1,1->2, etc.
-        return acc;
-      }, 0);
-      state.totalPoints = totalPoints;
-    }
 
-    console.log("[Result] Quiz state retrieved:", { currentQuestion: state.currentQuestionIndex, totalAnswers: state.answers?.length, totalPoints: state.totalPoints });
+    // Count companion votes (supports legacy shapes with 'points' or numeric answers)
+    const counts = { 1: 0, 2: 0, 3: 0, 4: 0 };
+    (state.answers || []).forEach(a => {
+      if (!a && a !== 0) return;
+      let c = null;
+      if (typeof a === 'object') {
+        if (Number.isFinite(a.companion)) c = a.companion;
+        else if (Number.isFinite(a.points)) c = a.points; // fallback for older shapes
+      } else if (typeof a === 'number') {
+        // legacy numeric index mapped to a+1 (best-effort fallback)
+        c = a + 1;
+      }
+      if (c && counts[c] !== undefined) counts[c]++;
+    });
+
+    state.companionCounts = counts;
+    // pick the companion with highest votes (ties -> smallest companion id)
+    const top = Object.keys(counts).reduce((best, k) => (counts[k] > counts[best] ? k : best), '1');
+    state.topCompanion = Number(top);
+
+    console.log("[Result] Quiz state retrieved:", { currentQuestion: state.currentQuestionIndex, totalAnswers: state.answers?.length, companionCounts: state.companionCounts, topCompanion: state.topCompanion });
     return state;
   } catch (error) {
     console.error("[Result] Error parsing quiz state:", error);
@@ -43,19 +53,38 @@ window.addEventListener("load", () => {  // Ambil hasil quiz (jika ada)
   const quizResults = getQuizResults();
   
   if (quizResults) {
-    console.log("[Result] Using quiz results:", quizResults.answers, "totalPoints:", quizResults.totalPoints);
+    console.log("[Result] Using quiz results:", quizResults.answers, "companionCounts:", quizResults.companionCounts, "topCompanion:", quizResults.topCompanion);
 
-    // Simple profile selection based on totalPoints (adjust thresholds as needed)
-    const total = quizResults.totalPoints || 0;
+    // Map companion id to profile (user mapping: 1->Xavier, 2->Zayne, 3->Rafayel, 4->Sylus)
+    const profiles = {
+      1: { name: 'Xavier', img: '/assets/img/res-xavier.png', text: `Xavier adalah sosok yang memilih berdiri di sampingmu, bukan di depan atau di belakangmu. Dia tenang, jarang berbicara, namun kehadirannya selalu terasa.` , text2: `Kamu cocok dengannya karena kamu menghargai ruang dan kebebasan, namun tetap membutuhkan seseorang yang tidak pergi.` },
+      2: { name: 'Zayne', img: '/assets/img/res-zayne.png', text: `Zayne adalah sosok yang dingin di luar namun penuh tanggung jawab di dalam. Dia selalu berpikir beberapa langkah ke depan, menimbang risiko, dan memastikan keselamatanmu.` , text2: `Kamu cocok dengannya karena kamu membutuhkan stabilitas di tengah kekacauan.` },
+      3: { name: 'Rafayel', img: '/assets/img/res-rafayel.png', text: `Rafayel membawa warna dan keceriaan. Dia mudah mengekspresikan perasaan dan membuat hari-harimu lebih ringan.` , text2: `Kamu cocok dengannya karena hatimu membutuhkan kejujuran dan koneksi yang tulus.` },
+      4: { name: 'Sylus', img: '/assets/img/res-sylus.png', text: `Sylus adalah kekuatan yang tidak mengenal kompromi. Dia dominan, intens, dan tidak ragu melangkah ke sisi gelap demi melindungimu.` , text2: `Kamu cocok dengannya karena kamu tidak takut menghadapi bahaya dan kegelapan.` }
+    };
 
-    const profiles = [
-      { max: 16, name: 'Xavier', img: '/assets/img/res-xavier.png', text: `Xavier adalah sosok yang memilih berdiri di sampingmu, bukan di depan atau di atasmu. Dia tenang, jarang berbicara, namun kehadirannya selalu terasa terutama saat dunia mulai terasa terlalu berat. Xavier mencintai dengan cara yang sunyi. Dia tidak menuntut, tidak mengekang, dan tidak memaksamu untuk bergantung padanya.`, text2: `Kamu cocok dengannya karena kamu menghargai ruang dan kebebasan, namun tetap membutuhkan seseorang yang tidak pergi. Bersama Xavier, kamu tidak perlu berpura-pura kuat sepanjang waktu. Dia akan menjagamu dari balik bayangan dan memastikan kamu bisa terus melangkah dengan caramu sendiri.` },
-      { max: 24, name: 'Rafayel', img: '/assets/img/res-rafayel.png', text: `Rafayel adalah kehangatan di dunia yang kejam. Dia ekspresif, emosional, dan tidak pernah ragu menunjukkan perasaannya. Di antara misi dan bahaya, Rafayel mengingatkanmu bahwa merasakan emosi bukan kelemahan, melainkan alasan untuk terus hidup.`, text2: `Kamu cocok dengannya karena hatimu membutuhkan kejujuran dan koneksi yang tulus. Rafayel mencintaimu tanpa topeng, tanpa jarak, dan tanpa ragu. Bersamanya, setiap hari terasa lebih hidup meski dunia tidak pernah benar-benar aman.` },
-      { max: 32, name: 'Sylus', img: '/assets/img/res-sylus.png', text: `Sylus adalah kekuatan yang tidak mengenal kompromi. Dia dominan, intens, dan tidak ragu melangkah ke sisi gelap demi melindungimu. Bagi Sylus, dunia hanyalah medan pertempuran dan kamu adalah satu-satunya hal yang tidak boleh hilang.`, text2: `Kamu cocok dengannya karena kamu tidak takut menghadapi bahaya dan kegelapan. Kamu memahami bahwa perlindungan terkadang datang dengan harga, dan Sylus adalah orang yang bersedia membayar harga itu tanpa ragu. Bersamanya, tidak ada ancaman yang dibiarkan mendekat.`},
-      { max: Infinity, name: 'Zayne', img: '/assets/img/res-zayne.png', text: `Zayne adalah sosok yang dingin di luar namun penuh tanggung jawab di dalam. Dia selalu berpikir beberapa langkah ke depan, menimbang risiko, dan memastikan keselamatanmu sebelum apa pun. Cintanya mungkin tidak selalu lembut, tetapi selalu konsisten dan bisa diandalkan.`, text2: `Kamu cocok dengannya karena kamu membutuhkan stabilitas di tengah kekacauan. Saat emosi dan situasi mulai tidak terkendali, Zayne adalah orang yang akan memegang kendali dan memastikan kamu tetap berdiri. Bersamanya, kamu merasa aman karena tahu ada seseorang yang tidak akan lengah.` }
-    ];
+    // CALeb Priority Override (Aturan Caleb)
+    // Jika companion1 >=4 AND companion2 <=2 AND companion4 <=1 => pemenang langsung Caleb
+    const counts = quizResults.companionCounts || {};
+    const c1 = counts[1] || 0;
+    const c2 = counts[2] || 0;
+    const c3 = counts[3] || 0;
+    const c4 = counts[4] || 0;
 
-    const found = profiles.find(p => total <= p.max) || profiles[profiles.length - 1];
+    let chosenLabel = null;
+    let found = null;
+
+    if (c1 >= 4 && c2 <= 2 && c4 <= 1) {
+      // Caleb override applies
+      chosenLabel = 'Caleb (Priority Override)';
+      found = { name: 'Caleb', img: '/assets/img/res-caleb.png', text: `Caleb adalah sosok yang mengayomi dan penuh dedikasi. Ketika syarat khusus terpenuhi, Caleb dipilih karena keselarasan karakter yang mendominasi pada pilihanmu.`, text2: `Caleb akan berdiri untukmu dengan penuh komitmen dan perhatian yang stabil.` };
+      console.log('[Result] Caleb override applied');
+    } else {
+      // fallback: pilih companion dengan suara terbanyak (tie -> smallest id)
+      const top = quizResults.topCompanion || 1;
+      found = profiles[top] || profiles[1];
+      chosenLabel = found.name;
+    }
 
     const titleEl = document.querySelector('.card-title');
     const imgEl = document.getElementById('result-image');
@@ -64,7 +93,7 @@ window.addEventListener("load", () => {  // Ambil hasil quiz (jika ada)
     if (titleEl) titleEl.textContent = `Partner Deepspace Hunter-mu adalah ${found.name}.`;
     if (imgEl) imgEl.src = found.img;
 
-    // Update description and score without removing existing buttons
+    // Update description and counts without removing existing buttons
     if (textEl) {
       // Description paragraph (preserve if already exists)
       let descP = textEl.querySelector('.result-desc');
@@ -77,21 +106,25 @@ window.addEventListener("load", () => {  // Ambil hasil quiz (jika ada)
         else textEl.appendChild(descP);
       }
       descP.textContent = found.text; // first part of description
-      // Add second part of description
-      const descP2 = document.createElement('p');
-      descP2.className = 'result-desc';
-      descP2.textContent = found.text2;
-      descP.after(descP2);
 
-      // Score paragraph
-      //let scoreP = textEl.querySelector('.result-score');
-      //if (!scoreP) {
-      //  scoreP = document.createElement('p');
-      //  scoreP.className = 'result-score';
-        // place score after description
-      //  descP.after(scoreP);
-      //}
-      //scoreP.innerHTML = `Skor kamu: <strong>${total}</strong>`;
+      // second part
+      let descP2 = textEl.querySelector('.result-desc-2');
+      if (!descP2) {
+        descP2 = document.createElement('p');
+        descP2.className = 'result-desc-2';
+        descP.after(descP2);
+      }
+      descP2.textContent = found.text2;
+
+      // show counts
+      let countsP = textEl.querySelector('.result-counts');
+      if (!countsP) {
+        countsP = document.createElement('p');
+        countsP.className = 'result-counts';
+        descP2.after(countsP);
+      }
+      const counts = quizResults.companionCounts || {};
+      countsP.innerHTML = `Hasil suara — Xavier: <strong>${counts[1]||0}</strong>, Zayne: <strong>${counts[2]||0}</strong>, Rafayel: <strong>${counts[3]||0}</strong>, Sylus: <strong>${counts[4]||0}</strong>`;
     }
 
     // Restart button (konfirmasi sebelum membersihkan state dan memulai ulang)
@@ -106,7 +139,8 @@ window.addEventListener("load", () => {  // Ambil hasil quiz (jika ada)
     // Optional: allow download (simple text file)
     const downloadBtn = document.getElementById('btn-download');
     if (downloadBtn) downloadBtn.addEventListener('click', () => {
-      const blob = new Blob([`Hasil quiz - Skor: ${total}\nPartner: ${found.name}`], { type: 'text/plain' });
+      const counts = quizResults.companionCounts || {};
+      const blob = new Blob([`Hasil quiz - Partner: ${found.name}\nXavier: ${counts[1]||0}\nZayne: ${counts[2]||0}\nRafayel: ${counts[3]||0}\nSylus: ${counts[4]||0}`], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
