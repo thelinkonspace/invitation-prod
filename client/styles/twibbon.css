@@ -5,7 +5,7 @@ body {
   background: radial-gradient(800px 500px at 20% 0%, #1a2a6c44, transparent), var(--bg);
   color: var(--text);
 }
-.app { max-width: 980px; margin: 0 auto; padding: 18px; }
+.app { margin: 0 auto; padding: 18px; }
 header h1 { margin: 0 0 6px; font-size: 22px; }
 header p { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
 

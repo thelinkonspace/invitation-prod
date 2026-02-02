@@ -32,11 +32,18 @@ export default async function handler(req, res) {
 
   // 2. Ambil hasil quiz berdasarkan candidate_id
   const { data: quizResult, error: quizError } = await supabase
-    .from("quiz_results")
-    .select("partner, counts, created_at")
-    .eq("candidate_id", candidate.id)
-    .order("created_at", { ascending: false })
-    .limit(1);
+  .from("quiz_results")
+  .select(`
+    partner,
+    counts,
+    created_at,
+    hunter_candidates (
+      oc_name
+    )
+  `)
+  .eq("candidate_id", candidate.id)
+  .order("created_at", { ascending: false })
+  .limit(1);
 
     if (quizError || !quizResult || quizResult.length === 0) {
         return res.status(404).json({
@@ -47,8 +54,13 @@ export default async function handler(req, res) {
 
     const latestQuiz = quizResult[0];
 
-  return res.status(200).json({
+    return res.status(200).json({
     success: true,
-    data: latestQuiz,
-  });
+    data: {
+        partner: latestQuiz.partner,
+        counts: latestQuiz.counts,
+        created_at: latestQuiz.created_at,
+        oc_name: latestQuiz.hunter_candidates.oc_name,
+    },
+    });
 }

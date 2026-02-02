@@ -8,6 +8,7 @@ const resetBtn = document.getElementById("resetBtn");
 const downloadBtn = document.getElementById("downloadBtn");
 
 let twibbon = new Image();
+let resultData = null;
 
 function waitForResultData() {
   return new Promise(resolve => {
@@ -20,12 +21,12 @@ function waitForResultData() {
 }
 
 (async () => {
-  const result = await waitForResultData();
+  resultData = await waitForResultData();
 
-  console.log("Result dari API:", result);
-
-  // normalisasi ke lowercase
-  const partner = result.partner.toLowerCase();
+  const partner = resultData.partner
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-");
 
   twibbon.src = `/assets/img/twibbon-${partner}.png`;
 })();
@@ -87,6 +88,20 @@ function draw() {
   // 3) draw twibbon overlay (front)
   if (twibbon.complete && twibbon.naturalWidth > 0) {
     ctx.drawImage(twibbon, 0, 0, canvas.width, canvas.height);
+  }
+
+  if (resultData) {
+    ctx.save();
+    ctx.font = "bold 30px 'Times New Roman', Times, serif";
+    ctx.fillStyle = "#000000";
+    ctx.textAlign = "center";
+
+    ctx.fillText(
+      "Dear " + resultData.partner,
+      canvas.width / 8,
+      canvas.height - 700
+    );
+    ctx.restore();
   }
 }
 
