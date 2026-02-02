@@ -94,6 +94,36 @@ export default async function handler(req, res) {
     });
   }
 
+  // ===== CHECK EXISTING CANDIDATE =====
+  const { data: existing, error: existErr } = await supabase
+    .from("hunter_candidates")
+    .select("id, username, oc_name, session_token")
+    .eq("username", username)
+    .maybeSingle();
+
+  if (existErr) {
+    return res.status(500).json({
+      success: false,
+      code: "DATABASE_ERROR",
+      message: existErr.message,
+    });
+  }
+
+  // If already exists, treat as success but don't insert again
+  if (existing) {
+    return res.status(200).json({
+      success: true,
+      code: "CANDIDATE_EXISTS",
+      message: "Candidate already registered",
+      data: {
+        id: existing.id,
+        username: existing.username,
+        oc_name: existing.oc_name,
+        session_token: existing.session_token,
+      },
+    });
+  }
+
   const { data, error } = await supabase
     .from("hunter_candidates")
     .insert([

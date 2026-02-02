@@ -1,5 +1,4 @@
 const popup = document.getElementById("popup");
-const form = document.getElementById("welcomeForm");
 
 // Ambil quiz state jika ada
 function getQuizResults() {
@@ -50,6 +49,7 @@ function clearQuizState() {
 }
 
 async function saveResult(payload) {
+  console.log("[Result] Saving quiz result to backend...", payload);
   try {
     const res = await fetch("/api/add_result", {
       method: "POST",
@@ -108,6 +108,16 @@ window.addEventListener("load", () => {  // Ambil hasil quiz (jika ada)
       chosenLabel = found.name;
     }
 
+    const token = sessionStorage.getItem("session_token");
+
+    const payload = {
+      session_token: token,
+      partner: found.name,
+      companionCounts: quizResults.companionCounts
+    };
+
+    saveResult(payload);
+
     const titleEl = document.querySelector('.card-title');
     const imgEl = document.getElementById('result-image');
     const textEl = document.getElementById('result-text');
@@ -147,21 +157,6 @@ window.addEventListener("load", () => {  // Ambil hasil quiz (jika ada)
       }
       const counts = quizResults.companionCounts || {};
       countsP.innerHTML = `Hasil suara — Xavier: <strong>${counts[1]||0}</strong>, Zayne: <strong>${counts[2]||0}</strong>, Rafayel: <strong>${counts[3]||0}</strong>, Sylus: <strong>${counts[4]||0}</strong>`;
-
-      const token = sessionStorage.getItem("session_token");
-
-      const payload = {
-        session_token: token,
-        partner: found.name,
-        companionCounts: quizResults.companionCounts
-      };
-
-      const SAVED_KEY = "quiz_result_saved";
-
-      if (!localStorage.getItem(SAVED_KEY)) {
-        saveResult(payload);
-        localStorage.setItem(SAVED_KEY, "true");
-      }
     }
 
     // Restart button (konfirmasi sebelum membersihkan state dan memulai ulang)
@@ -194,25 +189,4 @@ window.addEventListener("load", () => {  // Ambil hasil quiz (jika ada)
     popup.classList.add("show");
     popup.setAttribute("aria-hidden", "false");
   }, 120);
-});
-
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  const data = {
-    firstName: form.firstName.value.trim(),
-    lastName: form.lastName.value.trim(),
-    refCode: form.refCode.value.trim(),
-  };
-
-  if (!data.firstName || !data.lastName) return;
-
-  console.log("SUBMIT:", data);
-
-  // Clear quiz state sebelum meninggalkan halaman
-  clearQuizState();
-
-  // contoh: tutup popup
-  popup.classList.remove("show");
-
 });
