@@ -49,6 +49,28 @@ function clearQuizState() {
   console.log("[Result] Quiz state cleared");
 }
 
+async function saveResult(payload) {
+  try {
+    const res = await fetch("/api/add_result", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to save quiz result");
+    }
+
+    const data = await res.json();
+    console.log("[Result] Saved:", data);
+  } catch (err) {
+    console.error("[Result] Save failed:", err);
+  }
+}
+
+
 window.addEventListener("load", () => {  // Ambil hasil quiz (jika ada)
   const quizResults = getQuizResults();
   
@@ -125,6 +147,21 @@ window.addEventListener("load", () => {  // Ambil hasil quiz (jika ada)
       }
       const counts = quizResults.companionCounts || {};
       countsP.innerHTML = `Hasil suara — Xavier: <strong>${counts[1]||0}</strong>, Zayne: <strong>${counts[2]||0}</strong>, Rafayel: <strong>${counts[3]||0}</strong>, Sylus: <strong>${counts[4]||0}</strong>`;
+
+      const token = sessionStorage.getItem("session_token");
+
+      const payload = {
+        session_token: token,
+        partner: found.name,
+        companionCounts: quizResults.companionCounts
+      };
+
+      const SAVED_KEY = "quiz_result_saved";
+
+      if (!localStorage.getItem(SAVED_KEY)) {
+        saveResult(payload);
+        localStorage.setItem(SAVED_KEY, "true");
+      }
     }
 
     // Restart button (konfirmasi sebelum membersihkan state dan memulai ulang)
