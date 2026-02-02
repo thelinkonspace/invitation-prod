@@ -7,9 +7,33 @@ const rotateRange = document.getElementById("rotateRange");
 const resetBtn = document.getElementById("resetBtn");
 const downloadBtn = document.getElementById("downloadBtn");
 
+let twibbon = new Image();
+
+function waitForResultData() {
+  return new Promise(resolve => {
+    const check = () => {
+      if (window.RESULT_DATA) return resolve(window.RESULT_DATA);
+      requestAnimationFrame(check);
+    };
+    check();
+  });
+}
+
+(async () => {
+  const result = await waitForResultData();
+
+  console.log("Result dari API:", result);
+
+  // normalisasi ke lowercase
+  const partner = result.partner.toLowerCase();
+
+  twibbon.src = `/assets/img/twibbon-${partner}.png`;
+})();
+
+
 // ====== SETUP TEMPLATE (twibbon overlay) ======
-const twibbon = new Image();
-twibbon.src = "../../assets/img/twibbon.png"; // pastikan file ini ada (PNG transparan)
+//const twibbon = new Image();
+//twibbon.src = "../../assets/img/twibbon.png"; // pastikan file ini ada (PNG transparan)
 
 const backgroundImg = new Image();
 backgroundImg.src = "../../assets/img/template.png"; // foto background dari dev

@@ -171,7 +171,8 @@ window.addEventListener("load", () => {  // Ambil hasil quiz (jika ada)
     // Optional: allow download (simple text file)
     const downloadBtn = document.getElementById('btn-download');
     if (downloadBtn) downloadBtn.addEventListener('click', () => {
-      const counts = quizResults.companionCounts || {};
+      window.location.href = '/twibbon';
+      /* const counts = quizResults.companionCounts || {};
       const blob = new Blob([`Hasil quiz - Partner: ${found.name}\nXavier: ${counts[1]||0}\nZayne: ${counts[2]||0}\nRafayel: ${counts[3]||0}\nSylus: ${counts[4]||0}`], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -180,7 +181,7 @@ window.addEventListener("load", () => {  // Ambil hasil quiz (jika ada)
       document.body.appendChild(a);
       a.click();
       a.remove();
-      URL.revokeObjectURL(url);
+      URL.revokeObjectURL(url); */
     });
   }
 

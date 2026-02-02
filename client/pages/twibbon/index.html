@@ -5,6 +5,37 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Twibbon Drag & Resize</title>
   <link rel="stylesheet" href="/styles/twibbon.css" />
+  <script>
+  (async function () {
+    const token = sessionStorage.getItem("session_token");
+
+    if (!token) {
+      location.replace("/");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/check_result", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token })
+      });
+
+      const result = await res.json();
+
+      if (!result.success) {
+        location.replace("/");
+        return;
+      }
+
+      // 👇 simpan hasil API ke global
+      window.RESULT_DATA = result.data;
+
+    } catch (e) {
+      location.replace("/");
+    }
+  })();
+</script>
 </head>
 <body>
   <div class="app">
