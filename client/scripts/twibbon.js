@@ -97,7 +97,7 @@ function draw() {
     ctx.textAlign = "center";
 
     ctx.fillText(
-      "Dear " + resultData.partner,
+      "Dear " + resultData.oc_name,
       canvas.width / 8,
       canvas.height - 700
     );
